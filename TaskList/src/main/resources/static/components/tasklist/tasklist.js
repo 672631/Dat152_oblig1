@@ -33,9 +33,6 @@ class TaskList extends HTMLElement {
     constructor() {
         super();
 		
-        /**
-         * Fill inn rest of the code
-         */
 		this.shadow = this.attachShadow({mode: 'open'});
 		this.shadow.appendChild(template.content.cloneNode(true));
 		
