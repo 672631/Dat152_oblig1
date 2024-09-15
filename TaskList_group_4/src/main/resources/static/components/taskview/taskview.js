@@ -52,8 +52,8 @@ class TaskView extends HTMLElement {
 		//Henter oppgaver og viser dem i tasklist
 		const tasks = await this.fetchAllTasks();
 		if(tasks){
-			this.messageElement.textContent = "";
 			tasks.forEach(task => this.tasklist.showTask(task));
+			this.updateMessage();
 		}
 		
 		//Setter opp callback for å håndtere nye oppgaver via taskbox
@@ -61,6 +61,7 @@ class TaskView extends HTMLElement {
 			const addedTask = await this.createTask(newTask.title, newTask.status);
 			if(addedTask){
 				this.tasklist.showTask(addedTask);
+				this.updateMessage();
 			}
 		});
 		
@@ -77,9 +78,9 @@ class TaskView extends HTMLElement {
 	
 			const deletedTask = await this.deleteTask(id);
 			 if(deletedTask){
-			       
 			        this.tasklist.removeTask(id);
 			        console.log(`Oppgaven med ID ${id} ble slettet`);
+					this.updateMessage(); 
 			    } else {
 			        console.error(`Oppgaven med ID ${id} ble ikke slettet fra serveren.`);
 			    }
@@ -129,7 +130,7 @@ class TaskView extends HTMLElement {
 	//Oppretter ny oppgave	
 	async createTask(title, status){
 		try{
-			const response = await fetch(`${this.serviceUrl}/tasklist`, {
+			const response = await fetch(`${this.serviceUrl}/task`, {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify({title, status})
@@ -177,6 +178,15 @@ class TaskView extends HTMLElement {
 		}catch(error){
 			console.error('Feil ved sletting av oppgave', error);
 		}
+	}
+	
+	updateMessage(){
+		const numTasks = this.tasklist.getNumtasks();
+		if (numTasks === 0) {
+		       this.messageElement.textContent = "No tasks were found";
+		   } else {
+		       this.messageElement.textContent = `Found ${numTasks} tasks`;
+		   }
 	}	
 		
 }

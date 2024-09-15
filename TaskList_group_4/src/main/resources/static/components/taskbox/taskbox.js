@@ -11,7 +11,7 @@ href="${import.meta.url.match(/.*\//)[0]}/taskbox.css"/>
 <input type="text"  id="task-title" size="25" maxlength="80"
 placeholder="Task title" autofocus/>
 </div>
-<div>Status:</div><div id="task-status"><select></select></div>
+<div>Status:</div><div id="task-status"><select id="status-select"></select></div>
 </div>
 <p><button id="add-task" type="submit">Add task</button></p>
 </dialog>
@@ -34,7 +34,7 @@ class TaskBox extends HTMLElement {
 		this.dialog = this.shadow.querySelector('dialog');
 		this.closeButton = this.shadow.querySelector('.close-btn');
 		this.titleInput = this.shadow.querySelector('#task-title');
-		this.statusSelector = this.shadow.querySelector('#task-status');
+		this.statusSelector = this.shadow.querySelector('#status-select');
 		this.addButton = this.shadow.querySelector("#add-task");
 		
 		//Event listener for lukkeknapp
