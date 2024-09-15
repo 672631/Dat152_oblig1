@@ -249,6 +249,11 @@ class TaskList extends HTMLElement {
 			const taskTableBody = this.shadow.querySelector('tbody');
 			const taskRow = taskTableBody.children[taskIndex];
 			
+			
+			// Oppdaterer tekstinnholdet for status
+			const statusCell = taskRow.querySelector('td:nth-child(2)');
+			statusCell.textContent = newStatus;
+			
 			// Finn <select> elementet i raden
 			const selectElement = taskRow.querySelector('select');
 			
