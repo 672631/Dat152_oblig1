@@ -233,7 +233,7 @@ class TaskList extends HTMLElement {
      * @param {Object} task - Object with attributes {'id':taskId,'status':newStatus}
      */
     updateTask(task) {
-        const taskId = task.id;
+        const taskId = Number(task.id);
 		const newStatus = task.status;
 		
 		//Finn indeks til oppgaven i tabellen
@@ -268,6 +268,9 @@ class TaskList extends HTMLElement {
     removeTask(id) {
 		
 		console.log(`Prøver å fjerne oppgave med ID: ${id}`);
+		console.log('Current tasks:', this.tasks); 	
+		id = Number(id);
+		
 		//Finn indeks på oppgaven som skal fjernes
 		const taskIndex = this.tasks.findIndex(t => t.id === id);
 		
@@ -283,9 +286,9 @@ class TaskList extends HTMLElement {
 			//Fjerner rad fra view
 			const taskRow = taskTableBody.children[taskIndex];
 			taskTableBody.removeChild(taskRow);
-		}		else { //Skriver ut feilmelding i konsoll dersom det ikke finnes en oppgave med gitt id
+		}else { 
 			console.log(this.tasks);
-		        console.error(`Oppgave med ID ${id} ble ikke funnet.`);
+			console.error(`Oppgave med ID ${id} ble ikke funnet.`);
 		}
     }
 

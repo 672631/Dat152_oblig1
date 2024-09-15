@@ -74,14 +74,18 @@ class TaskView extends HTMLElement {
 		
 		//Setter opp callback for sletting av oppgaver'
 		this.tasklist.deletetaskCallback(async id => {
+	
 			const deletedTask = await this.deleteTask(id);
-			if(deletedTask && deletedTask.responseStatus){
-				this.tasklist.removeTask(id);
-				
-			}else {
-				console.error(`Oppgaven med ID ${id} ble ikke slettet fra serveren.`);
-			}
-		});
+			 if(deletedTask){
+			       
+			        this.tasklist.removeTask(id);
+			        console.log(`Oppgaven med ID ${id} ble slettet`);
+			    } else {
+			        console.error(`Oppgaven med ID ${id} ble ikke slettet fra serveren.`);
+			    }
+			});
+			
+	
 		
 		//Viser taskbox modal ved knappetrykk
 		this.newTaskButton.addEventListener('click', () => {
@@ -166,7 +170,7 @@ class TaskView extends HTMLElement {
 			
 			const data = await response.json(); 
 			if(data.responseStatus){
-				this.tasklist.removeTask(id);
+				
 				return data; 
 			}
 			
