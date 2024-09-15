@@ -54,7 +54,7 @@ class TaskList extends HTMLElement {
 		            if (event.target.tagName === 'SELECT') {
 		                const selectElement = event.target;
 		                const row = selectElement.closest('tr');
-		                const taskId = row.querySelector('td:nth-child(1)').textContent;  // Anta ID-en er i første kolonne
+		                const taskId = row.getAttribute('data-id')  // Anta ID-en er i første kolonne
 		                const newStatus = selectElement.value;
 		                
 		                // Bekreft og kjør statusendrings-callback hvis tilgjengelig
@@ -69,7 +69,7 @@ class TaskList extends HTMLElement {
 				       this.shadow.addEventListener('click', (event) => {
 				           if (event.target.tagName === 'BUTTON' && event.target.textContent === 'Remove') {
 				               const row = event.target.closest('tr');
-				               const taskId = row.querySelector('td:nth-child(1)').textContent;  // Anta ID-en er i første kolonne
+				               const taskId = row.getAttribute('data-id')  // Anta ID-en er i første kolonne
 
 				               // Bekreft og kjør slettings-callback hvis tilgjengelig
 				               const confirmation = window.confirm(`Are you sure you want to delete task ${taskId}?`);
@@ -194,6 +194,8 @@ class TaskList extends HTMLElement {
 		//Klone en ny rad fra taskrow-template
 		const row = taskrow.content.cloneNode(true);
 		
+		row.querySelector('tr').setAttribute('data-id', task.id);
+		
 		//Fyller inn data fra task-objektet
 		row.querySelector('td:nth-child(1)').textContent = task.title;
 		row.querySelector('td:nth-child(2)').textContent = task.status;
@@ -264,6 +266,8 @@ class TaskList extends HTMLElement {
      * @param {Integer} task - ID of task to remove
      */
     removeTask(id) {
+		
+		console.log(`Prøver å fjerne oppgave med ID: ${id}`);
 		//Finn indeks på oppgaven som skal fjernes
 		const taskIndex = this.tasks.findIndex(t => t.id === id);
 		
@@ -280,6 +284,7 @@ class TaskList extends HTMLElement {
 			const taskRow = taskTableBody.children[taskIndex];
 			taskTableBody.removeChild(taskRow);
 		}		else { //Skriver ut feilmelding i konsoll dersom det ikke finnes en oppgave med gitt id
+			console.log(this.tasks);
 		        console.error(`Oppgave med ID ${id} ble ikke funnet.`);
 		}
     }

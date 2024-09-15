@@ -28,10 +28,11 @@ class TaskBox extends HTMLElement {
 		
 		//Kloner innholdet til shadow DOM
 		this.shadow.appendChild(template.content.cloneNode(true));
+		console.log(this.shadow.innerHTML);
 		
 		//Referanser til elementer i modalboksen
 		this.dialog = this.shadow.querySelector('dialog');
-		this.closeButton = this.shadow.querySelector('close-btn');
+		this.closeButton = this.shadow.querySelector('.close-btn');
 		this.titleInput = this.shadow.querySelector('#task-title');
 		this.statusSelector = this.shadow.querySelector('#task-status');
 		this.addButton = this.shadow.querySelector("#add-task");
@@ -81,7 +82,7 @@ class TaskBox extends HTMLElement {
 			};
 			this.taskCallback(newTask);
 			this.close(); 
-		});
+		});	
 		
 		
 	}

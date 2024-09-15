@@ -27,7 +27,7 @@ class TaskView extends HTMLElement {
 		this.tasklist = this.shadowRoot.querySelector('task-list');
 		this.taskbox = this.shadowRoot.querySelector('task-box'); 
 		this.messageElement = this.shadowRoot.querySelector('#message');
-		this.newTaskButton = this.shadowRoot.querySelector('#button');
+		this.newTaskButton = this.shadowRoot.querySelector('button');
 		
 		this.serviceUrl = this.getAttribute('data-serviceurl');
 		
@@ -44,12 +44,13 @@ class TaskView extends HTMLElement {
 		const statuses = await this.fetchAllStatuses();
 		if(statuses){
 			this.taskbox.setStatusesList(statuses);
-			this.tasklist.setStatusesList(statuses);
+			this.tasklist.setStatuseslist(statuses);
+			console.log(this.newTaskButton);
 			this.newTaskButton.disabled = false; 
 		}
 		
 		//Henter oppgaver og viser dem i tasklist
-		const tasks = await this.fetchTasks();
+		const tasks = await this.fetchAllTasks();
 		if(tasks){
 			this.messageElement.textContent = "";
 			tasks.forEach(task => this.tasklist.showTask(task));
@@ -64,7 +65,7 @@ class TaskView extends HTMLElement {
 		});
 		
 		//Setter opp callback for statusendringer
-		this.tasklist.changeStatusCallback(async (id, newStatus) => {
+		this.tasklist.changestatusCallback(async (id, newStatus) => {
 			const updatedTask = await this.updateStatus(id, newStatus);
 			if(updatedTask){
 				this.tasklist.updateTask(updatedTask);
@@ -72,11 +73,13 @@ class TaskView extends HTMLElement {
 		});
 		
 		//Setter opp callback for sletting av oppgaver'
-		this.tasklist.deleteTaskCallback(async id => {
+		this.tasklist.deletetaskCallback(async id => {
 			const deletedTask = await this.deleteTask(id);
-			if(deletedTask){
+			if(deletedTask && deletedTask.responseStatus){
 				this.tasklist.removeTask(id);
 				
+			}else {
+				console.error(`Oppgaven med ID ${id} ble ikke slettet fra serveren.`);
 			}
 		});
 		
@@ -138,7 +141,7 @@ class TaskView extends HTMLElement {
 	}
 	
 	//Oppdaterer status til en oppgave
-	async uppdateStatus(id, newStatus){
+	async updateStatus(id, newStatus){
 		try{
 			const response = await fetch(`${this.serviceUrl}/task/${id}`, {
 				method: 'PUT',
@@ -163,6 +166,7 @@ class TaskView extends HTMLElement {
 			
 			const data = await response.json(); 
 			if(data.responseStatus){
+				this.tasklist.removeTask(id);
 				return data; 
 			}
 			
