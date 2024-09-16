@@ -124,32 +124,7 @@ class TaskList extends HTMLElement {
      */
     changestatusCallback(callback) {
     	this.changeCallback = callback;
-		/*
-		//Finn alle <select> elementer og legg til en event listener for "change" hendelse
-		const selectElements = this.shadow.querySelectorAll('select');
-		if (selectElements.length === 0) {
-		    console.error("Ingen <select>-elementer funnet. Sørg for at oppgavene er lagt til før du kaller changestatusCallback.");
-		    return;
-		}
-		
-		selectElements.forEach((select, index) => {
-			select.addEventListener('change', (event) => {
-				const newStatus = event.target.value;
-				
-				// Henter ID for den tilhørende oppgaven
-				const taskId = this.tasks[index].id
-				
-				//Vis en bekreftelsesdialog til brukeren
-				const confirmation = window.confirm(`Set '${this.tasks[index].title}' to ${newStatus}?`);
-				
-				if(confirmation && this.changeCallback){
-					
-					//Kjør callback dersom brukeren bekrefter endringen
-					this.changeCallback(taskId, newStatus);
-				}
-			});
-			
-		});*/
+
     }
 
     /**
@@ -160,27 +135,6 @@ class TaskList extends HTMLElement {
     deletetaskCallback(callback) {      
 		this.deleteCallback = callback;
 		
-		/*
-		//Finn alle delete-knapper i listen
-		const deleteButtons = this.shadow.querySelectorAll('button[type="button"]');
-		
-		//Legg til en event-listener for hver knapp
-		deleteButtons.forEach((button, index) => {
-			button.addEventListener('click', () => {
-				
-				//Henter id for tilhørende oppgave
-				const taskId = this.tasks[index].id;
-			
-				//Bekreftelsesdialog
-				const confirmation = window.confirm(`Are you sure you want to delete task ${this.tasks[index].title}?`);			
-			
-				
-				if(confirmation && this.deleteCallback){
-					this.deleteCallback(taskId);
-				}
-			});
-		});
-		*/
     }
 
     /**
